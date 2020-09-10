@@ -1,35 +1,16 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
+    <h1>TEST Firebase + Vue</h1>
+    <input type="text" v-model="data"/>
+    <button v-on:click="add">ADD</button>
     <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-typescript" target="_blank">typescript</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
+      <li v-for="item in items">{{ item }}</li>
     </ul>
   </div>
 </template>
 
 <script lang="ts">
+import firebase from "firebase";
 import Vue from 'vue';
 
 export default Vue.extend({
@@ -37,6 +18,29 @@ export default Vue.extend({
   props: {
     msg: String,
   },
+  created() {
+    firebase.database().ref('test').on('child_added', this.childAdded)
+  },
+  data() {
+    return {
+      data: '',
+      items: []
+    }
+  },
+  methods: {
+    add() {
+      firebase.database().ref('test').push({
+        test: 'aaa',
+        data: this.data
+      }, ()=>{
+        console.log('add done')
+      })
+    },
+    childAdded(snap) {
+      console.log('childAdded: ', snap.val())
+      this.items.push(snap.val().data)
+    }
+  }
 });
 </script>
 

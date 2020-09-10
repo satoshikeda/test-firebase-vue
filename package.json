@@ -4,10 +4,11 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --dest public",
+    "build": "vue-cli-service build --dest public --no-clean",
     "lint": "vue-cli-service lint",
     "test": "npm run test:unit",
-    "test:unit": "jest"
+    "test:unit": "jest",
+    "deploy": "npm run build && firebase deploy"
   },
   "dependencies": {
     "firebase": "^7.19.1",

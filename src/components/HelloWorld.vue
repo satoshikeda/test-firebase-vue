@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts">
-import firebase from "firebase";
+import * as firebase from "firebase";
 import Vue from 'vue';
 
 export default Vue.extend({
@@ -24,7 +24,7 @@ export default Vue.extend({
   data() {
     return {
       data: '',
-      items: []
+      items: [''],
     }
   },
   methods: {
@@ -36,9 +36,10 @@ export default Vue.extend({
         console.log('add done')
       })
     },
-    childAdded(snap) {
+    childAdded(snap: any) {
       console.log('childAdded: ', snap.val())
-      this.items.push(snap.val().data)
+      const data = snap.val().data
+      this.items.push(data)
     }
   }
 });
